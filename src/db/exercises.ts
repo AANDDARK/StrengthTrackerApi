@@ -10,7 +10,7 @@ export const findById = async (userId: number) => {
 }
 export const createWithId = async(user_id: number, id: number, name: string, describe: string) => {
   const result = await db.query(
-    "INSERT INTO exercises (user_id, id, name, describe) VALUES ($1, $2, $3, $4)",
+    "INSERT INTO exercises (user_id, id, name, describe, count, datelog) VALUES ($1, $2, $3, $4, 0, )",
     [user_id, id, name, describe]
   )
   return result
@@ -23,5 +23,10 @@ export const deleteWithId = async(user_id: number, id: number) => {
 export const reorderIdCall = async(user_id: number, id: number) => {
   const result = await db.query(
     "SELECT reorder_id_exercises($1, $2);", [id, user_id]
+  )
+}
+export const updateCount = async(countValue: number, user_id: number, id: number) => {
+  const result = await db.query(
+    "UPDATE exercises SET count = $1  WHERE user_id = $2 AND id = $3;", [countValue ,user_id, id]
   )
 }
